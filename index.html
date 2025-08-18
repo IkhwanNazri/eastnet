@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EastNet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    screens: {
+                        'xs': '475px',
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .active {
+            color: #3b82f6;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        /* Hide bottom nav on desktop */
+        @media (min-width: 1024px) {
+            .bottom-nav {
+                display: none;
+            }
+        }
+        /* Product hover effect */
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Sidebar styles */
+        .sidebar {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40 font-['Instrument_Sans']">
+        <div class="container mx-auto px-4 py-3">
+            <div id="mobileMenuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"></div>
+    
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform -translate-x-full transition-transform duration-300">
+                <div class="p-4 border-b">
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold">Menu</span>
+                        <button id="closeMobileMenu" class="text-gray-500">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                <nav class="p-4 space-y-2">
+                    <a href="index.html" class="block py-2 px-2 rounded hover:bg-gray-100 font-bold">Home</a>
+                    <a href="collection/all.html" class="block py-2 px-2 rounded hover:bg-gray-100 font-bold">Shop</a>
+                    <a href="about.html" class="block py-2 px-2 rounded hover:bg-gray-100 font-bold">About Us</a>
+                    <a href="contact.html" class="block py-2 px-2 rounded hover:bg-gray-100 font-bold">Contact Us</a>
+                </nav>
+            </div>
+        
+            <!-- Header -->
+            <header class="bg-white shadow-sm sticky top-0 z-40">
+                <div class="container mx-auto px-4 py-3">
+                    <!-- Mobile Top Bar -->
+                    <div class="flex justify-between items-center lg:hidden">
+                        <button id="mobileMenuButton" class="text-gray-600">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <img src="./img/EASTNET-01.png" alt="" class="max-w-20 h-auto">
+                        <div class="flex space-x-4">
+                            <button id="searchBtnMobile" class="text-gray-600">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <a href="cart.html" class="relative text-gray-600">
+                                <i class="fas fa-shopping-cart text-xl"></i>
+                                <span id="cartBadge" class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Desktop Top Bar -->
+                    <div class="hidden lg:flex items-center justify-between">
+                        <!-- Left Menu -->
+                        <nav class="flex space-x-6">
+                            <a href="index.html" class="font-bold text-gray-700 hover:text-blue-600">Home</a>
+                            <a href="collection/all.html" class="font-bold text-gray-700 hover:text-blue-600">Shop</a>
+                            <a href="about.html" class="font-bold text-gray-700 hover:text-blue-600">About Us</a>
+                            <a href="contact.html" class="font-bold text-gray-700 hover:text-blue-600">Contact Us</a>
+                        </nav>
+                        
+                        <!-- Logo -->
+                        <div class="flex-shrink-0 px-8">
+                           <img src="./img/EASTNET-01.png" alt="" class="max-w-20 h-auto">
+                        </div>
+                        
+                        <!-- Right Menu -->
+                        <div class="flex items-center space-x-6">
+                            <div class="relative">
+                                <input type="text" 
+                                       class="w-64 px-4 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                       placeholder="I'm looking for...">
+                                <button class="absolute right-3 top-2 text-gray-500">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <a href="cart.html" class="relative text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-shopping-cart text-xl"></i>
+                                <span id="desktopCartBadge" class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                            </a>
+                        </div>
+                    </div>
+        </div>
+    </header>
+
+    <!-- Search Sidebar -->
+    <div id="searchSidebar" class="sidebar fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-lg z-50 p-4">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold">Cari Produk</h2>
+            <button id="closeSearch" class="text-gray-500">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        </div>
+        <div class="relative">
+            <input type="text" id="searchInput" 
+                   class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="Cari produk...">
+            <div id="searchResults" class="mt-4 max-h-96 overflow-y-auto">
+                <!-- Search results will appear here -->
+            </div>
+        </div>
+    </div>
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pb-20">
+        <!-- Hero Section with 3 images -->
+        <section class="mt-4 mb-12 grid grid-cols-1 md:grid-cols-2 gap-3  lg:grid-cols-3 lg:h-96">
+            <a href="section/trophy.html" class="group relative rounded-2xl overflow-hidden h-48 md:h-64 lg:row-span-2 lg:h-full lg:col-span-2   ">
+                <img src="/img/1-01.png" 
+                     alt="New Arrivals" 
+                     class="w-full h-full  object-cover object-center group-hover:scale-105 transition-transform duration-300" " >
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <!-- <div class="absolute inset-0 flex items-end p-6">
+                    <h2 class="text-white text-xl font-bold">Koleksi Terbaru</h2>
+                </div> -->
+            </a>
+            <a href="special-offers.html" class="group relative rounded-2xl overflow-hidden h-48 md: h-64 lg:col-span-1 lg:h-full">
+                <img src="https://images.unsplash.com/photo-1607082349566-187342175e2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                     alt="Special Offers" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div class="absolute inset-0 flex items-end p-6">
+                    <h2 class="text-white text-xl font-bold">Tawaran Istimewa</h2>
+                </div>
+            </a>
+            <a href="bestsellers.html" class="group relative rounded-2xl overflow-hidden h-48 md:h-64 lg:col-span-1 lg:h-full">
+                <img src="img/1-01.png" 
+                     alt="Bestsellers" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div class="absolute inset-0 flex items-end p-6">
+                    <h2 class="text-white text-2xl font-bold">SHOP BY COLLECTION</h2>
+                </div>
+            </a>
+        </section>
+
+        <!-- Main Content Grid Section - Desktop Only -->
+        
+
+        <!-- Products Grid -->
+        <section class=" mt-4 mb-12">
+            <div class="flex justify-between items-center mb-6 mt-6">
+                <h3 class="text-2xl text-center font-semibold mx-auto">SHOP BY COLLECTION</h3>
+               
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Product Card 1 -->
+                <a href="product1.html" class="block product-card group h-full">
+                    <div class="relative overflow-hidden rounded-lg bg-gray-100 h-48 lg:h-full">
+                        <img src="/img/3-02.png" 
+                             alt="Product 1" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        Wishlist button hidden per request
+                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 text-gray-600 hover:text-red-500 transition-colors" 
+                                onclick="event.preventDefault(); addToWishlist(1);">
+                            <i class="far fa-heart"></i>
+                        </button>
+                       
+                    </div>
+                    <!-- Product name/price hidden per request
+                    <div class="p-4 bg-white rounded-b-lg">
+                        <h4 class="font-medium text-gray-800 mb-1">T-Shirt Basic</h4>
+                        <p class="text-blue-600 font-semibold">RM 49.90</p>
+                    </div>
+                    -->
+                </a>
+                
+                <!-- Product Card 2 -->
+                <a href="product2.html" class="block product-card group">
+                    <div class="relative overflow-hidden rounded-lg bg-gray-100 h-48 lg:h-full">
+                        <img src="/img/2@300x.png" 
+                             alt="Product 2" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        Wishlist button hidden per request
+                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 text-gray-600 hover:text-red-500 transition-colors"
+                                onclick="event.preventDefault(); addToWishlist(2);">
+                            <i class="far fa-heart"></i>
+                        </button>
+                       
+                    </div>
+                    <!-- Product name/price hidden per request
+                    <div class="p-4 bg-white rounded-b-lg">
+                        <h4 class="font-medium text-gray-800 mb-1">Kasut Sukan</h4>
+                        <p class="text-blue-600 font-semibold">RM 199.90</p>
+                    </div>
+                    -->
+                </a>
+                
+                <!-- Product Card 3 -->
+                <a href="product3.html" class="block product-card group">
+                    <div class="relative overflow-hidden rounded-lg bg-gray-100 h-48 lg:h-full">
+                        <img src="/img/2@300x.png" 
+                             alt="Product 3" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        Wishlist button hidden per request
+                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 text-gray-600 hover:text-red-500 transition-colors"
+                                onclick="event.preventDefault(); addToWishlist(3);">
+                            <i class="far fa-heart"></i>
+                        </button>
+                       
+                    </div>
+               
+                </a>
+                
+                <!-- Product Card 4 -->
+                <a href="product4.html" class="block product-card group">
+                    <div class="relative overflow-hidden rounded-lg bg-gray-100 h-48 lg:h-full">
+                        <img src="img/2@300x.png" 
+                             alt="Product 4" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <!-- <!-- Wishlist button hidden per request
+                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 text-gray-600 hover:text-red-500 transition-colors"
+                                onclick="event.preventDefault(); addToWishlist(4);">
+                            <i class="far fa-heart"></i>
+                        </button> -->
+                        -->
+                    </div>
+                  
+                </a>
+            </div>
+        </section>
+        <section id="featuredProduct  ">
+            <div class="flex justify-between items-center mb-6 mt-6">
+
+                <div class="tittle  mb-6 mt-6 font-semibold text-2xl font-black font-['Instrument_Sans'] ">Featured Product</div>
+                <a href="./collection/all.html" class="bg-blue-500 text-white px-4 py-2 rounded-md">View All</a>
+            </div>
+            
+            <div class="cardio grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="card group bg-red-900">
+                    <div class="relative overflow-hidden rounded-lg bg-gray-100 h-32 lg:h-full">
+                        <img src="/img/product/anime standee.png" 
+                             alt="Product 3" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        Wishlist button hidden per request
+                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 text-gray-600 hover:text-red-500 transition-colors"
+                                onclick="event.preventDefault(); addToWishlist(3);">
+                            <i class="far fa-heart"></i>
+                        </button>
+                       
+                    </div>
+                </div>
+            </div>
+         </section>
+    </main>
+
+    <!-- Bottom Navigation (Mobile Only) -->
+    <nav class="bottom-nav bg-white lg:hidden">
+        <div class="flex justify-around items-center py-3">
+            <a href="index.html" class="flex flex-col items-center text-blue-500 active">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Home</span>
+            </a>
+            <a href="wishlist.html" class="flex flex-col items-center text-gray-500">
+                <i class="far fa-heart text-xl"></i>
+                <span class="text-xs mt-1">Wishlist</span>
+            </a>
+            <a href="shop.html" class="flex flex-col items-center text-gray-500">
+                <i class="fas fa-store text-xl"></i>
+                <span class="text-xs mt-1">Shop</span>
+            </a>
+            <a href="cart.html" class="flex flex-col items-center text-gray-500 relative">
+                <i class="fas fa-shopping-cart text-xl"></i>
+                <span class="text-xs mt-1">Cart</span>
+                <span class="absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
