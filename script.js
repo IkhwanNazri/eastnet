@@ -1,202 +1,359 @@
 
-        // Cart and Wishlist State
-        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-        let wishlistItems = JSON.parse(localStorage.getItem('wishlistItems')) || [];
-        
-        // DOM Elements
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const closeMobileMenu = document.getElementById('closeMobileMenu');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-        const searchBtnMobile = document.getElementById('searchBtnMobile');
-        const searchBtn = document.getElementById('searchBtn');
-        const closeSearch = document.getElementById('closeSearch');
-        const searchSidebar = document.getElementById('searchSidebar');
-        const searchInput = document.getElementById('searchInput');
-        const searchResults = document.getElementById('searchResults');
-        const overlay = document.getElementById('overlay');
+// Cart and Wishlist State
+let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+let wishlistItems = JSON.parse(localStorage.getItem("wishlistItems")) || [];
 
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
-            updateBadges();
-            setupEventListeners();
-        });
+// DOM Elements
+const mobileMenuButton = document.getElementById("mobileMenuButton");
+const closeMobileMenu = document.getElementById("closeMobileMenu");
+const mobileMenu = document.getElementById("mobileMenu");
+const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
+const searchBtnMobile = document.getElementById("searchBtnMobile");
+const searchBtn = document.getElementById("searchBtn");
+const closeSearch = document.getElementById("closeSearch");
+const searchSidebar = document.getElementById("searchSidebar");
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
+const overlay = document.getElementById("overlay");
 
-        // Setup event listeners
-        function setupEventListeners() {
-            // Mobile menu toggle
-            mobileMenuButton?.addEventListener('click', toggleMobileMenu);
-            closeMobileMenu?.addEventListener('click', toggleMobileMenu);
-            mobileMenuOverlay?.addEventListener('click', toggleMobileMenu);
+// Initialize the page
+document.addEventListener("DOMContentLoaded", () => {
+  updateBadges();
+  setupEventListeners();
+});
 
-            // Search functionality
-            searchBtnMobile?.addEventListener('click', toggleSearchSidebar);
-            searchBtn?.addEventListener('click', toggleSearchSidebar);
-            closeSearch?.addEventListener('click', toggleSearchSidebar);
-            overlay?.addEventListener('click', toggleSearchSidebar);
+// Setup event listeners
+function setupEventListeners() {
+  // Mobile menu toggle
+  mobileMenuButton?.addEventListener("click", toggleMobileMenu);
+  closeMobileMenu?.addEventListener("click", toggleMobileMenu);
+  mobileMenuOverlay?.addEventListener("click", toggleMobileMenu);
 
-            // Search input with debounce
-            if (searchInput) {
-                searchInput.addEventListener('input', debounce(handleSearch, 300));
-            }
-        }
+  // Search functionality
+  searchBtnMobile?.addEventListener("click", toggleSearchSidebar);
+  searchBtn?.addEventListener("click", toggleSearchSidebar);
+  closeSearch?.addEventListener("click", toggleSearchSidebar);
+  overlay?.addEventListener("click", toggleSearchSidebar);
 
-        // Toggle mobile menu
-        function toggleMobileMenu() {
-            mobileMenu.classList.toggle('open');
-            mobileMenuOverlay.classList.toggle('hidden');
-            document.body.classList.toggle('overflow-hidden');
-        }
+  // Search input with debounce
+  if (searchInput) {
+    searchInput.addEventListener("input", debounce(handleSearch, 300));
+  }
+}
 
-        // Toggle search sidebar
-        function toggleSearchSidebar() {
-            searchSidebar.classList.toggle('open');
-            overlay.classList.toggle('hidden');
-            document.body.classList.toggle('overflow-hidden');
-            if (searchSidebar.classList.contains('open')) {
-                searchInput.focus();
-            }
-        }
+// Toggle mobile menu
+function toggleMobileMenu() {
+  mobileMenu.classList.toggle("open");
+  mobileMenuOverlay.classList.toggle("hidden");
+  document.body.classList.toggle("overflow-hidden");
+}
 
-        // Handle search input
-        function handleSearch(e) {
-            const query = e.target.value.trim();
-            if (query.length > 2) {
-                // Simulate search - replace with actual API call
-                setTimeout(() => {
-                    const mockResults = [
-                        { id: 1, name: 'T-Shirt Basic', price: 'RM 49.90' },
-                        { id: 2, name: 'Kasut Sukan', price: 'RM 199.90' },
-                        { id: 3, name: 'Kamera Digital', price: 'RM 1,299.00' },
-                        { id: 4, name: 'Headphone', price: 'RM 159.90' }
-                    ];
-                    
-                    displaySearchResults(mockResults.filter(item => 
-                        item.name.toLowerCase().includes(query.toLowerCase())
-                    ));
-                }, 300);
-            } else {
-                searchResults.innerHTML = '';
-            }
-        }
+// Toggle search sidebar
+function toggleSearchSidebar() {
+  searchSidebar.classList.toggle("open");
+  overlay.classList.toggle("hidden");
+  document.body.classList.toggle("overflow-hidden");
+  if (searchSidebar.classList.contains("open")) {
+    searchInput.focus();
+  }
+}
 
-        // Display search results
-        function displaySearchResults(results) {
-            if (!searchResults) return;
-            
-            if (results.length === 0) {
-                searchResults.innerHTML = '<p class="text-gray-500 text-center py-4">Tiada hasil carian dijumpai</p>';
-                return;
-            }
+// Handle search input
+function handleSearch(e) {
+  const query = e.target.value.trim();
+  if (query.length > 2) {
+    // Simulate search - replace with actual API call
+    setTimeout(() => {
+      const mockResults = [
+        { id: 1, name: "T-Shirt Basic", price: "RM 49.90" },
+        { id: 2, name: "Kasut Sukan", price: "RM 199.90" },
+        { id: 3, name: "Kamera Digital", price: "RM 1,299.00" },
+        { id: 4, name: "Headphone", price: "RM 159.90" },
+      ];
 
-            const html = results.map(result => `
+      displaySearchResults(
+        mockResults.filter((item) =>
+          item.name.toLowerCase().includes(query.toLowerCase())
+        )
+      );
+    }, 300);
+  } else {
+    searchResults.innerHTML = "";
+  }
+}
+
+// Display search results
+function displaySearchResults(results) {
+  if (!searchResults) return;
+
+  if (results.length === 0) {
+    searchResults.innerHTML =
+      '<p class="text-gray-500 text-center py-4">Tiada hasil carian dijumpai</p>';
+    return;
+  }
+
+  const html = results
+    .map(
+      (result) => `
                 <a href="product${result.id}.html" class="block p-3 hover:bg-gray-50 rounded-lg transition-colors border-b border-gray-100">
                     <div class="font-medium">${result.name}</div>
                     <div class="text-sm text-gray-600">${result.price}</div>
                 </a>
-            `).join('');
+            `
+    )
+    .join("");
 
-            searchResults.innerHTML = html;
-        }
+  searchResults.innerHTML = html;
+}
 
-        // Add to wishlist
-        function addToWishlist(productId) {
-            const product = getProductById(productId);
-            if (!product) return;
-            
-            const existingIndex = wishlistItems.findIndex(item => item.id === productId);
-            
-            if (existingIndex > -1) {
-                wishlistItems.splice(existingIndex, 1);
-            } else {
-                wishlistItems.push(product);
-            }
-            
-            // Save to localStorage
-            localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
-            updateBadges();
-            
-            // Update heart icon
-            const heartIcons = document.querySelectorAll(`[onclick*="addToWishlist(${productId})"] i`);
-            heartIcons.forEach(icon => {
-                icon.classList.toggle('far');
-                icon.classList.toggle('fas');
-                icon.classList.toggle('text-red-500');
-            });
-        }
+// Add to wishlist
+function addToWishlist(productId) {
+  const product = getProductById(productId);
+  if (!product) return;
 
-        // Add to cart
-        function addToCart(productId, quantity = 1) {
-            const product = getProductById(productId);
-            if (!product) return;
-            
-            const existingItem = cartItems.find(item => item.id === productId);
-            
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cartItems.push({ ...product, quantity });
-            }
-            
-            // Save to localStorage
-            localStorage.setItem('cartItems', JSON.stringify(cartItems));
-            updateBadges();
-        }
+  const existingIndex = wishlistItems.findIndex(
+    (item) => item.id === productId
+  );
 
-        // Get product by ID
-        function getProductById(id) {
-            const products = [
-                { id: 1, name: 'T-Shirt Basic', price: 49.90 },
-                { id: 2, name: 'Kasut Sukan', price: 199.90 },
-                { id: 3, name: 'Kamera Digital', price: 1299.00 },
-                { id: 4, name: 'Headphone', price: 159.90 }
-            ];
-            return products.find(p => p.id === id);
-        }
+  if (existingIndex > -1) {
+    wishlistItems.splice(existingIndex, 1);
+  } else {
+    wishlistItems.push(product);
+  }
 
-        // Update cart and wishlist badges
-        function updateBadges() {
-            // Update cart badges
-            const cartBadges = document.querySelectorAll('[id$="CartBadge"]');
-            cartBadges.forEach(badge => {
-                const count = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
-                badge.textContent = count || '';
-                badge.classList.toggle('hidden', count === 0);
-                if (count > 0) {
-                    badge.classList.add('animate-bounce-once');
-                    setTimeout(() => {
-                        badge.classList.remove('animate-bounce-once');
-                    }, 300);
+  // Save to localStorage
+  localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
+  updateBadges();
+
+  // Update heart icon
+  const heartIcons = document.querySelectorAll(
+    `[onclick*="addToWishlist(${productId})"] i`
+  );
+  heartIcons.forEach((icon) => {
+    icon.classList.toggle("far");
+    icon.classList.toggle("fas");
+    icon.classList.toggle("text-red-500");
+  });
+}
+
+// Add to cart
+function addToCart(productId, quantity = 1) {
+  const product = getProductById(productId);
+  if (!product) return;
+
+  const existingItem = cartItems.find((item) => item.id === productId);
+
+  if (existingItem) {
+    existingItem.quantity += quantity;
+  } else {
+    cartItems.push({ ...product, quantity });
+  }
+
+  // Save to localStorage
+  localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  updateBadges();
+}
+
+// Get product by ID
+function getProductById(id) {
+  const products = [
+    { id: 1, name: "T-Shirt Basic", price: 49.9 },
+    { id: 2, name: "Kasut Sukan", price: 199.9 },
+    { id: 3, name: "Kamera Digital", price: 1299.0 },
+    { id: 4, name: "Headphone", price: 159.9 },
+  ];
+  return products.find((p) => p.id === id);
+}
+
+// Update cart and wishlist badges
+function updateBadges() {
+  // Update cart badges
+  const cartBadges = document.querySelectorAll('[id$="CartBadge"]');
+  cartBadges.forEach((badge) => {
+    const count = cartItems.reduce(
+      (sum, item) => sum + (item.quantity || 1),
+      0
+    );
+    badge.textContent = count || "";
+    badge.classList.toggle("hidden", count === 0);
+    if (count > 0) {
+      badge.classList.add("animate-bounce-once");
+      setTimeout(() => {
+        badge.classList.remove("animate-bounce-once");
+      }, 300);
+    }
+  });
+
+  // Update wishlist badges
+  const wishlistBadges = document.querySelectorAll('[id$="WishlistBadge"]');
+  wishlistBadges.forEach((badge) => {
+    const count = wishlistItems.length;
+    badge.textContent = count || "";
+    badge.classList.toggle("hidden", count === 0);
+  });
+
+  // Update heart icons for wishlisted items
+  wishlistItems.forEach((item) => {
+    const heartIcons = document.querySelectorAll(
+      `[onclick*="addToWishlist(${item.id})"] i`
+    );
+    heartIcons.forEach((icon) => {
+      icon.classList.remove("far");
+      icon.classList.add("fas", "text-red-500");
+    });
+  });
+}
+
+// Debounce function
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Fungsi untuk menjana product card
+async function loadProducts() {
+  console.log("Memulakan loadProducts()");
+  try {
+    const response = await fetch("products.json");
+    console.log("Respon JSON:", response);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Data produk:", data);
+
+    // Semak ID produk yang unik
+    const uniqueIds = new Set();
+    const duplicateIds = data.products.filter((product) => {
+      if (uniqueIds.has(product.id)) {
+        console.warn(`Produk dengan ID ${product.id} adalah duplikat!`);
+        return true;
+      }
+      uniqueIds.add(product.id);
+      return false;
+    });
+
+    if (duplicateIds.length > 0) {
+      console.error("Terdapat produk dengan ID yang sama:", duplicateIds);
+      // Keluarkan produk yang mempunyai ID duplikat
+      data.products = Array.from(uniqueIds).map((id) =>
+        data.products.find((product) => product.id === id)
+      );
+    }
+
+    const cardContainer = document.querySelector(".cardio");
+    console.log("Kontainer card:", cardContainer);
+
+    if (!cardContainer) {
+      console.error("Kontainer card tidak dijumpai!");
+      return;
+    }
+
+    // Kosongkan kontainer card sedia ada
+    cardContainer.innerHTML = "";
+
+    // Jana semula product card
+    data.products.forEach((product) => {
+      const cardElement = document.createElement("div");
+      cardElement.classList.add(
+        "card",
+        "group",
+        "bg-white",
+        "shadow-lg",
+        "rounded-xl",
+        "overflow-hidden",
+        "transform",
+        "transition-all",
+        "duration-300"
+      );
+
+      cardElement.innerHTML = `
+        <a href="${product.detailPage}" class="block group">
+          <div class="product-card bg-white rounded-lg border border-gray-100 font-['Montserrat'] font-bold text-2xl cursor-pointer " style="font-family: Montserrat, sans-serif;" >
+            <div class="relative w-full pb-[100%] overflow-hidden">
+                <img src="${product.image}"
+                    alt="${product.name}"
+                    class="absolute inset-0 w-full h-full object-cover">
+                ${
+                  product.wishlistEnabled
+                    ? `
+                <button onclick="addToWishlist(${product.id}); event.stopPropagation();" class="absolute top-2 right-2 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center text-gray-700 hover:text-red-500">
+                    <i class="far fa-heart text-sm"></i>
+                </button>
+                `
+                    : ""
                 }
-            });
+            </div>
+            <div class="p-2 md:p-3">
+                <h3 class="text-xs md:text-sm text-gray-800 truncate mb-1" style="font-weight: 700;">${
+                  product.name
+                }</h3>
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] md:text-xs text-gray-500" style="font-weight: 600;">${
+                      product.category
+                    }</span>
+                    ${
+                      product.viewPriceEnabled
+                        ? `
+                    <button onclick="" class="bg-red-600 text-white px-2 py-1 text-[10px] md:text-xs rounded-full hover:bg-red-700" style="font-weight: 700;">
+                        View More
+                    </button>
+                    `
+                        : ""
+                    }
+                </div>
+            </div>
+          </div>
+        </a>
+      `;
 
-            // Update wishlist badges
-            const wishlistBadges = document.querySelectorAll('[id$="WishlistBadge"]');
-            wishlistBadges.forEach(badge => {
-                const count = wishlistItems.length;
-                badge.textContent = count || '';
-                badge.classList.toggle('hidden', count === 0);
-            });
+      cardContainer.appendChild(cardElement);
+    });
 
-            // Update heart icons for wishlisted items
-            wishlistItems.forEach(item => {
-                const heartIcons = document.querySelectorAll(`[onclick*="addToWishlist(${item.id})"] i`);
-                heartIcons.forEach(icon => {
-                    icon.classList.remove('far');
-                    icon.classList.add('fas', 'text-red-500');
-                });
-            });
-        }
+    console.log("Product card berjaya dijana");
+  } catch (error) {
+    console.error("Ralat memuatkan produk:", error);
+  }
+}
 
-        // Debounce function
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
+// Panggil fungsi apabila halaman dimuatkan
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOMContentLoaded event");
+  loadProducts();
+});
+
+// Fungsi untuk menambah produk baru
+async function addProduct(newProduct) {
+  try {
+    // Dapatkan data produk sedia ada
+    const response = await fetch("products.json");
+    const data = await response.json();
+
+    // Tambah produk baru
+    newProduct.id = data.products.length + 1;
+    data.products.push(newProduct);
+
+    // Simpan semula fail JSON
+    await fetch("products.json", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    // Muat semula produk
+    await loadProducts();
+  } catch (error) {
+    console.error("Ralat menambah produk:", error);
+  }
+}

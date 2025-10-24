@@ -46,6 +46,18 @@
         .sidebar.open {
             transform: translateX(0);
         }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 50;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-['Instrument_Sans']">
@@ -136,10 +148,12 @@
         <h6 class="animate-bounce text-3xl bg-yellow-500 px-2 py-1 rounded inline-block font-bold mb-2 mt-5"> in Tanjung Malim?</h6>
       
     </div>
-    <div class="whatsapp mx-auto grid grid-cols-1 text-center mb-2">
-        <a href="https://wa.me/60123456789" class="w-12 h-12 bg-green-500 w-full h-full p-6 rounded-full"><img src="../img/whatsapp.png" alt="" class="">Whatsapp Sekarang </a>
-    </div>
+   <a href="https://wa.me/60183249321" class="whatsapp-float" target="_blank">
+        <div class="bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg">
+            <i class="fab fa-whatsapp text-2xl"></i>
+        </div>
+    </a>
 </div>
-<script src="script.js"></script>
+<!-- <script src="script.js"></script> -->
 </body>
 </html>

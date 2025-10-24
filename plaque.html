@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EastNet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .active {
+            color: #3b82f6;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        /* Hide bottom nav on desktop */
+        @media (min-width: 1024px) {
+            .bottom-nav {
+                display: none;
+            }
+        }
+        /* Product hover effect */
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Sidebar styles */
+        .sidebar {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 50;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-['Instrument_Sans']">
+   <!-- Header -->
+   
+    
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-40">
+            <div class="container mx-auto px-4 py-3">
+                <!-- Mobile Top Bar -->
+                <div class="flex justify-between items-center lg:hidden">
+                    <button id="mobileMenuButton" class="text-gray-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <img src="./img/EASTNET-01.png" alt="" class="max-w-20 h-auto">
+                    <div class="flex space-x-4">
+                        <button id="searchBtnMobile" class="text-gray-600">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <a href="cart.html" class="relative text-gray-600">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span id="cartBadge" class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Desktop Top Bar -->
+                <div class="hidden lg:flex items-center justify-between">
+                    <!-- Left Menu -->
+                    <nav class="flex space-x-6">
+                        <a href="../index.html" class="font-bold text-gray-700 hover:text-blue-600">Home</a>
+                        <a href="collection/all.html" class="font-bold text-gray-700 hover:text-blue-600">Shop</a>
+                        <a href="about.html" class="font-bold text-gray-700 hover:text-blue-600">About Us</a>
+                        <a href="contact.html" class="font-bold text-gray-700 hover:text-blue-600">Contact Us</a>
+                    </nav>
+                    
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 px-8">
+                       <img src="./img/EASTNET-01.png" alt="" class="max-w-20 h-auto">
+                    </div>
+                    
+                    <!-- Right Menu -->
+                    <div class="flex items-center space-x-6">
+                        <div class="relative">
+                            <input type="text" 
+                                   class="w-64 px-4 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                   placeholder="I'm looking for...">
+                            <button class="absolute right-3 top-2 text-gray-500">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <a href="cart.html" class="relative text-gray-600 hover:text-blue-600">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span id="desktopCartBadge" class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                        </a>
+                    </div>
+                </div>
+    </div>
+</header>
+<!-- Search Sidebar -->
+<div id="searchSidebar" class="sidebar fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-lg z-50 p-4">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold">Cari Produk</h2>
+        <button id="closeSearch" class="text-gray-500">
+            <i class="fas fa-times text-2xl"></i>
+        </button>
+    </div>
+    <div class="relative">
+        <input type="text" id="searchInput" 
+               class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+               placeholder="Cari produk...">
+        <div id="searchResults" class="mt-4 max-h-96 overflow-y-auto">
+            <!-- Search results will appear here -->
+        </div>
+    </div>
+</div>
+<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+<main class="mx-auto ">
+    <div class="banner ">
+        <img src="../img/4-03.png" alt="" class=" block w-full h-full object-cover object-center  ">
+    </div>
+</main>
+<div class="catalog container mx-auto text-center mt-12  ">
+    <div class="tajuk justify-between">
+
+        <span class="font-regular text-xl nd:text-2xl leading-snug mb-6">Looking for high-quality </span>
+        <h6 class="text-3xl  font-bold mb-2 mt-5">Custom Plaque</h6>
+        <h6 class="animate-bounce text-3xl bg-yellow-500 px-2 py-1 rounded inline-block font-bold mb-2 mt-5"> in Tanjung Malim?</h6>
+      
+    </div>
+    <h2 class="font-bold font-['Montserrat'] text-4xl mt-6 py-6 text-green-600">Tempah Custom Plaque anda tanpa stres, kualiti terjamin pasti memukau di setiap ACARA!</h2>
+   <a href="https://wa.me/60183249321" class="whatsapp-float" target="_blank">
+        <div class="bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg">
+            <i class="fab fa-whatsapp text-2xl"></i>
+        </div>
+    </a>
+    <div class="productduo">
+      <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="plaqueProducts">
+           
+           
+        </div>
+       
+      </div>
+    </div>
+</div>
+<script>
+  const plaqueProducts = [
+    {
+        id: 'PD01',
+        name: 'PD01',
+        image: '/img/product/plaque/pd01-01.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Plaque kayu berkualiti tinggi dengan ukiran halus'
+    },
+    {
+        id: 'PD02',
+        name: 'PD02',
+        image: '/img/product/plaque/pd02-01.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Plaque akrilik jernih dengan tampilan modern'
+    },
+    {
+        id: 'PD03',
+        name: 'PD03',
+        image: '/img/product/plaque/PD03-01.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Plaque kayu warna hitam elegan'
+    },
+    {
+        id: 'PD04',
+        name: 'PD04',
+        image: '/img/product/plaque/plaque4.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Plaque dengan efek marmer mewah'
+    },
+    {
+        id: 'PD05',
+        name: 'PD05',
+        image: '/img/product/plaque/plaque5.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Plaque dengan lapisan emas 24k'
+    },
+    {
+        id: 'PD06',
+        name: 'PD06',
+        image: '/img/product/plaque/plaque6.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Desain minimalis elegan'
+    },
+    {
+        id: 'PD07',
+        name: 'PD07',
+        image: '/img/product/plaque/pd07-01.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Tersedia dalam berbagai pilihan warna'
+    },
+    {
+        id: 'PD08',
+        name: 'PD08',
+        image: '/img/product/plaque/plaque8.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Dengan ukiran tangan tradisional'
+    },
+    {
+        id: 'PD09',
+        name: 'PD09',
+        image: '/img/product/plaque/plaque9.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Plaque kristal premium'
+    },
+    {
+        id: 'PD10',
+        name: 'PD10',
+        image: '/img/product/plaque/plaque10.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Dengan sentuhan vintage klasik'
+    },
+    {
+        id: 'PD11',
+        name: 'PD11',
+        image: '/img/product/plaque/plaque11.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Efek 3D yang menakjubkan'
+    },
+    {
+        id: 'PLQ-012',
+        name: 'Plaque Kayu Hitam Emas',
+        image: '/img/product/plaque/plaque12.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Kombinasi hitam dan emas mewah'
+    },
+    {
+        id: 'PLQ-013',
+        name: 'Plaque Akrilik Floating',
+        image: '/img/product/plaque/plaque13.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Efek mengambang yang unik'
+    },
+    {
+        id: 'PLQ-014',
+        name: 'Plaque Kayu Rustic',
+        image: '/img/product/plaque/plaque14.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Dengan sentuhan rustic alami'
+    },
+    {
+        id: 'PLQ-015',
+        name: 'Plaque Premium Collection',
+        image: '/img/product/plaque/plaque15.jpg',
+        price: 'RM 13.90 - RM 23.90',
+        description: 'Koleksi terbatas edisi spesial'
+    }
+];
+
+// Fungsi untuk membuat product card
+function createPlaqueCard(product) {
+    return `
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100">
+            <div class="relative pb-[100%]">
+                <img src="${product.image}" alt="${product.name}" 
+                     class="absolute h-full w-full object-cover">
+            </div>
+            <div class="p-4">
+                <h3 class="font-bold text-2xl mb-1">${product.name}</h3>
+                
+                <div class="space-y-2 mb-4">
+                    
+                    ${(() => {
+                        // Harga berdasarkan ID produk
+                        const prices = {
+                            'PD01': [
+                                { size: '15x10cm', price: 'RM 13.90' },
+                                { size: '18x12cm', price: 'RM 23.90' },
+                               
+                            ],
+                            'PD02': [
+                               { size: '15x10cm', price: 'RM 13.90' },
+                                { size: '18x12cm', price: 'RM 23.90' },
+                               
+                            ],
+                            'PD03': [
+                               { size: '15x10cm', price: 'RM 13.90' },
+                                { size: '18x12cm', price: 'RM 23.90' },
+                               
+                            ],
+                            'PD04': [
+                               { size: '15x10cm', price: 'RM 13.90' },
+                                { size: '18x12cm', price: 'RM 23.90' },
+                               
+                            ],
+                            'PD05': [
+                               { size: '15x10cm', price: 'RM 13.90' },
+                                { size: '18x12cm', price: 'RM 23.90' },
+                               
+                            ]
+                        };
+                        
+                        // Default prices if product ID not found
+                        const productPrices = prices[product.id] || [
+                            { size: '15x10cm', price: 'RM 13.90' },
+                            { size: '18x12cm', price: 'RM 23.90' }
+                        ];
+                        
+                        // Generate price list HTML
+                        return productPrices.map(sizePrice => `
+                            <div class="flex items-center justify-between bg-gray-50 p-2 rounded mb-2">
+                                <div class="flex-1">
+                                    <span class="text-sm font-medium">${sizePrice.size}</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm font-bold text-blue-600">${sizePrice.price}</span>
+                                    <a href="https://wa.me/60183249321?text=Saya%20nak%20order%20${encodeURIComponent(product.name)}%20(${product.id})%20${encodeURIComponent(sizePrice.size)}%20${encodeURIComponent(sizePrice.price)}" 
+                                       target="_blank"
+                                       class="bg-green-500 hover:bg-green-600 text-white text-xs rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        `).join('');
+                    })()}
+                </div>
+                
+                <a href="https://wa.me/60183249321?text=Saya%20tertarik%20dengan%20produk%20${encodeURIComponent(product.name)}%20(${product.id})%20-%20Boleh%20saya%20tahu%20detail%20lebih%20lanjut?" 
+                   target="_blank"
+                   class="block w-full bg-green-500 hover:bg-green-600 text-white text-center py-2 rounded-md transition-colors flex items-center justify-center">
+                    <i class="fab fa-whatsapp mr-2"></i> Whatsapp Kami!
+                </a>
+            </div>
+        </div>
+    `;
+}
+
+// Memasukkan product cards ke dalam halaman
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('plaqueProducts');
+    if (container) {
+        plaqueProducts.forEach(product => {
+            container.innerHTML += createPlaqueCard(product);
+        });
+    }
+});
+</script>
+ 
+</body>
+</html>

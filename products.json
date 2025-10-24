@@ -1,0 +1,74 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "detailPage": "standee.html",
+      "name": "Anime Standee",
+      "image": "/img/product/anime standee.png",
+      "category": "Acrylic",
+      "description": "Standee anime berkualiti tinggi",
+      "wishlistEnabled": true,
+      "viewPriceEnabled": true
+    },
+    {
+      "id": 2,
+      "detailPage": "tshirt.html",
+      "name": "A6 Standee",
+      "image": "/img/product/a6 standee.png",
+      "category": "Acrylic",
+      "description": "Standee saiz A6 yang menarik",
+      "wishlistEnabled": true,
+      "viewPriceEnabled": true
+    },
+    {
+      "id": 3,
+      "detailPage": "/plaque.html",
+      "name": "Custom Plaque",
+      "image": "/img/product/PLAQUE.png",
+      "category": "Acrylic",
+      "description": "Produk berkualiti tinggi",
+      "wishlistEnabled": true,
+      "viewPriceEnabled": true
+    },
+    {
+      "id": 4,
+      "detailPage": "medal.html",
+      "name": "Custom Medal",
+      "image": "/img/product/medal-01.jpg",
+      "category": "Acrylic",
+      "description": "Produk berkualiti tinggi",
+      "wishlistEnabled": true,
+      "viewPriceEnabled": true
+    },
+    {
+      "id": 5,
+      "detailPage": "dtf.html",
+      "name": "DTF Sticker",
+      "image": "/img/product/dtf-01.jpg",
+      "category": "Acrylic",
+      "description": "Produk berkualiti tinggi",
+      "wishlistEnabled": true,
+      "viewPriceEnabled": true
+    },
+    {
+      "id": 6,
+      "detailPage": "crystal.html",
+      "name": "Crystal Trophy",
+      "image": "/img/product/4.jpeg",
+      "category": "Acrylic",
+      "description": "Produk berkualiti tinggi",
+      "wishlistEnabled": true,
+      "viewPriceEnabled": true
+    },
+    {
+      "id": 7,
+      "detailPage": "dtf.html",
+      "name": "DTF Sticker",
+      "image": "/img/product/dtf-01.jpg",
+      "category": "Acrylic",
+      "description": "Produk berkualiti tinggi",
+      "wishlistEnabled": true,
+      "viewPriceEnabled": true
+    }
+  ]
+}
