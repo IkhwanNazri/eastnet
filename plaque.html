@@ -60,9 +60,337 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
+        .carousel-container {
+        position: relative;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+    }
+    
+    .carousel-track {
+         display: flex;
+    transition: transform 0.5s ease-in-out;
+    }
+    
+    .carousel-slide {
+         flex-shrink: 0;
+    width: 100%;
+    padding: 20px 0;
+    }
+    
+    .carousel-image {
+        height: 300px;
+    width: 100%;
+    object-fit: cover;
+    }
+    
+    .carousel-dots {
+       display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    }
+    
+    .dot {
+       width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    }
+    
+    .dot.active {
+         background-color: #3b82f6;
+    width: 24px;
+    border-radius: 5px;
+    }
+    
+    .carousel-button {
+        position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    .carousel-button:hover {
+         background-color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .carousel-button.prev { left: 10px; }
+    .carousel-button.next { right: 10px; }
+@media (max-width: 767px) {
+    .carousel-slide .grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 1rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+    }
+    
+    .carousel-slide .grid::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+    }
+    
+    .carousel-slide .grid > div {
+        flex: 0 0 100%;
+        scroll-snap-align: center;
+    }
+    
+    .carousel-slide img {
+        height: 100%;
+    }
+}
+
+/* Desktop - 3 columns biasa */
+@media (min-width: 768px) {
+    .carousel-slide .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+/* Pop-up styles */
+/* Pop-up styles */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding: 20px;
+}
+
+.popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    background: whitesmoke;
+    border-radius: 20px;
+    padding: 30px 20px;
+    max-width: 450px;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: scale(0.7);
+    transition: transform 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.popup-overlay.show .popup-content {
+    transform: scale(1);
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    color: black;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.popup-close:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotate(90deg);
+}
+
+.popup-icon {
+    margin-bottom: 15px;
+}
+
+.popup-icon img {
+    max-width: 100px;
+    height: auto;
+    display: inline-block;
+}
+
+.popup-title {
+    color: black;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.popup-subtitle {
+    color: black;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.popup-discount {
+    padding: 0;
+    margin: 15px 0;
+}
+
+.popup-discount img {
+    display: block;
+    margin: 0 auto;
+    max-width: 250px;
+    width: 80%;
+    height: auto;
+}
+
+.popup-description {
+    color: black;
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.popup-button {
+    background: #25D366;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.popup-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+    background: #20ba5a;
+}
+
+/* Mobile specific */
+@media (max-width: 640px) {
+    .popup-content {
+        padding: 25px 10px;
+        border-radius: 15px;
+        max-height: 85vh;
+    }
+    
+    .popup-icon img {
+        max-width: 80px;
+    }
+    
+    .popup-title {
+        font-size: 22px;
+        margin-bottom: 8px;
+    }
+    
+    .popup-subtitle {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+    
+    .popup-discount {
+        margin: 10px 0;
+    }
+    
+    .popup-discount img {
+        max-width: 200px;
+        width: 75%;
+    }
+    
+    .popup-description {
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+    
+    .popup-button {
+        padding: 10px 25px;
+        font-size: 15px;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 380px) {
+    .popup-content {
+        padding: 20px 12px;
+    }
+    
+    .popup-icon img {
+        max-width: 70px;
+    }
+    
+    .popup-title {
+        font-size: 20px;
+    }
+    
+    .popup-discount img {
+        max-width: 180px;
+    }
+}
     </style>
 </head>
 <body class="bg-gray-50 font-['Instrument_Sans']">
+    <div id="welcomePopup" class="popup-overlay">
+    <div class="popup-content">
+        <button class="popup-close" onclick="closePopup()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="popup-icon">
+            <img src="./img/EASTNET-01.png" alt="EastNet Logo" style="width: 120px; height: auto;">
+        </div>
+        
+        <h2 class="popup-title">SELAMAT DATANG!</h2>
+        
+        <p class="popup-subtitle">
+            Dapatkan Membership Card Eksklusif Kami
+        </p>
+        
+        <div class="popup-discount">
+           <img src="img/discaount-01.png" alt="25% Discount" style="width: 100%; max-width: 300px; height: auto;">
+        </div>
+        
+        <p class="popup-description">
+            Nikmati diskaun istimewa untuk semua produk plaque & merchandise kami! 
+            Tawaran terhad untuk ahli baharu sahaja.
+        </p>
+        
+        <a href="https://wa.me/60183249321?text=Saya%20nak%20daftar%20Membership%20Card%20dan%20dapatkan%2025%25%20discount!" 
+           target="_blank"
+           onclick="closePopup()">
+            <button class="popup-button">
+                <i class="fab fa-whatsapp"></i> Daftar Sekarang!
+            </button>
+        </a>
+    </div>
+</div>
    <!-- Header -->
    
     
@@ -151,15 +479,72 @@
       
     </div>
     <h2 class="font-bold font-['Montserrat'] text-4xl mt-6 py-6 text-green-600">Tempah Custom Plaque anda tanpa stres, kualiti terjamin pasti memukau di setiap ACARA!</h2>
-    <!-- <div class=" carousel container mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            <div class="col-span-2">
-                <img src="../img/product/plaque/pd01-01.jpg" alt="">
+    <div class="carousel container mx-auto px-4 py-8">
+    <div class="carousel-container relative">
+        <!-- Navigation Buttons -->
+        <button class="carousel-button prev" onclick="previousSlide()">
+            <i class="fas fa-chevron-left text-gray-700"></i>
+        </button>
+        <button class="carousel-button next" onclick="nextSlide()">
+            <i class="fas fa-chevron-right text-gray-700"></i>
+        </button>
+        
+        <!-- Carousel Track -->
+        <div class="carousel-track" id="carouselTrack">
+            <!-- Slide 1 -->
+            <div class="carousel-slide">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <img src="img/product/plaque/c1-01.jpg" alt="Plaque 1" class="w-full h-full object-cover">
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <img src="img/product/plaque/c2-01.jpg" alt="Plaque 2" class="w-full h-full object-cover">
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <img src="img/product/plaque/c3-01.jpg" alt="Plaque 3" class="w-full h-full object-cover">
+                    </div>
+                </div>
             </div>
-            <div class="col-span-2">
-                <img src="../img/product/plaque/pd01-01.jpg" alt="">
+            
+            <!-- Slide 2 -->
+            <div class="carousel-slide">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <img src="img/product/plaque/c7-01.jpg" alt="Plaque 4" class="w-full h-full object-cover">
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <img src="img/product/plaque/c8-01.jpg" alt="Plaque 5" class="w-full h-full object-cover">
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <img src="img/product/plaque/c9-01.jpg" alt="Plaque 6" class="w-full h-full object-cover">
+                    </div>
+                </div>
             </div>
-    </div> -->
+            
+            <!-- Slide 3 -->
+            <div class="carousel-slide">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <img src="img/product/plaque/c4-01.jpg" alt="Plaque 7" class="w-full h-full object-cover">
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <img src="img/product/plaque/c5-01.jpg" alt="Plaque 8" class="w-full h-full object-cover">
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <img src="img/product/plaque/c6-01.jpg" alt="Plaque 9" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dots Navigation -->
+        <div class="carousel-dots" id="carouselDots">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
+        </div>
+    </div>
+</div>
    <a href="https://wa.me/60183249321" class="whatsapp-float" target="_blank">
         <div class="bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg">
             <i class="fab fa-whatsapp text-2xl"></i>
@@ -361,6 +746,67 @@ function createPlaqueCard(product) {
         </div>
     `;
 }
+let currentSlide = 0;
+const totalSlides = 3;
+let autoPlayInterval;
+
+function updateCarousel() {
+    const track = document.getElementById('carouselTrack');
+    const dots = document.querySelectorAll('.dot');
+    
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+    });
+}
+
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateCarousel();
+    resetAutoPlay();
+}
+
+function previousSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateCarousel();
+    resetAutoPlay();
+}
+
+function goToSlide(index) {
+    currentSlide = index;
+    updateCarousel();
+    resetAutoPlay();
+}
+
+function startAutoPlay() {
+    autoPlayInterval = setInterval(nextSlide, 3000);
+}
+
+function resetAutoPlay() {
+    clearInterval(autoPlayInterval);
+    startAutoPlay();
+}
+
+// Start carousel
+document.addEventListener('DOMContentLoaded', () => {
+    startAutoPlay();
+    
+    const carouselContainer = document.querySelector('.carousel-container');
+    carouselContainer.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+    carouselContainer.addEventListener('mouseleave', startAutoPlay);
+    
+    // Touch support
+    let touchStartX = 0;
+    carouselContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    carouselContainer.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        if (touchEndX < touchStartX - 50) nextSlide();
+        if (touchEndX > touchStartX + 50) previousSlide();
+    });
+});
 
 // Memasukkan product cards ke dalam halaman
 document.addEventListener('DOMContentLoaded', () => {
@@ -370,6 +816,47 @@ document.addEventListener('DOMContentLoaded', () => {
             container.innerHTML += createPlaqueCard(product);
         });
     }
+});
+// Pop-up functionality
+function showPopup() {
+    const popup = document.getElementById('welcomePopup');
+    // Show popup after 1 second delay
+    setTimeout(() => {
+        popup.classList.add('show');
+    }, 1000);
+}
+
+function closePopup() {
+    const popup = document.getElementById('welcomePopup');
+    popup.classList.remove('show');
+}
+
+// Show popup on every page load
+document.addEventListener('DOMContentLoaded', () => {
+    const popup = document.getElementById('welcomePopup');
+    
+    // Close popup when clicking outside
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+            closePopup();
+        }
+    });
+    
+    // Show popup setiap kali refresh
+    showPopup();
+});
+
+// Close popup when clicking outside
+document.addEventListener('DOMContentLoaded', () => {
+    const popup = document.getElementById('welcomePopup');
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+            closePopup();
+        }
+    });
+    
+    // Check and show popup
+    checkPopup();
 });
 </script>
  
