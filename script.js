@@ -357,3 +357,43 @@ async function addProduct(newProduct) {
     console.error("Ralat menambah produk:", error);
   }
 }
+function showPopup() {
+    const popup = document.getElementById('welcomePopup');
+    // Show popup after 1 second delay
+    setTimeout(() => {
+        popup.classList.add('show');
+    }, 1000);
+}
+
+function closePopup() {
+    const popup = document.getElementById('welcomePopup');
+    popup.classList.remove('show');
+}
+
+// Show popup on every page load
+document.addEventListener('DOMContentLoaded', () => {
+    const popup = document.getElementById('welcomePopup');
+    
+    // Close popup when clicking outside
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+            closePopup();
+        }
+    });
+    
+    // Show popup setiap kali refresh
+    showPopup();
+});
+
+// Close popup when clicking outside
+document.addEventListener('DOMContentLoaded', () => {
+    const popup = document.getElementById('welcomePopup');
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+            closePopup();
+        }
+    });
+    
+    // Check and show popup
+    checkPopup();
+});

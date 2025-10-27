@@ -35,6 +35,40 @@
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
+     <div id="welcomePopup" class="popup-overlay">
+    <div class="popup-content">
+        <button class="popup-close" onclick="closePopup()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="popup-icon">
+            <img src="./img/EASTNET-01.png" alt="EastNet Logo" style="width: 120px; height: auto;">
+        </div>
+        
+        <h2 class="popup-title">SELAMAT DATANG!</h2>
+        
+        <p class="popup-subtitle">
+            Dapatkan Membership Card Eksklusif Kami
+        </p>
+        
+        <div class="popup-discount">
+           <img src="img/discaount-01.png" alt="25% Discount" style="width: 100%; max-width: 300px; height: auto;">
+        </div>
+        
+        <p class="popup-description">
+            Nikmati diskaun istimewa untuk semua produk plaque & merchandise kami! 
+            Tawaran terhad untuk ahli baharu sahaja.
+        </p>
+        
+        <a href="https://wa.me/60183249321?text=Saya%20nak%20daftar%20Membership%20Card%20dan%20dapatkan%2025%25%20discount!" 
+           target="_blank"
+           onclick="closePopup()">
+            <button class="popup-button">
+                <i class="fab fa-whatsapp"></i> Daftar Sekarang!
+            </button>
+        </a>
+    </div>
+</div>
     <header class="bg-white shadow-sm sticky top-0 z-40 font-['Montserrat']">
         <div class="container mx-auto px-4 py-3">
             <div id="mobileMenuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"></div>
